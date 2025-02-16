@@ -63,13 +63,21 @@ def get_track_image(track_ids):
 
     # Extract the image URLs for each track and store them in a list
     urls = []
+    song_names = []
     for track in tracks_data:
         if track and "album" in track and "images" in track["album"] and track["album"]["images"]:
             urls.append(track["album"]["images"][0]["url"])  # Use the first image (highest resolution)
         else:
             urls.append(None)  # Append None if no image is found
+
+        # Extract song names
+        if track and "name" in track:
+            song_names.append(track["name"])  # Use the track's name
+        else:
+            song_names.append(None)  # Append None if no name is found
     
-    return urls
+    return urls, song_names
+
 
 
 # Node class to store node information
@@ -78,6 +86,7 @@ class Node:
         self.index = index
         self.track_id = track_id
         self.url = url
+        self.song_name = None  # Add song_name attribute
         self.group = None
 
     def to_dict(self):
@@ -85,6 +94,7 @@ class Node:
             "id": self.index,
             "track_id": self.track_id,
             "url": self.url,
+            "song_name": self.song_name,  # Include song_name in the dictionary
             "group": self.group,
         }
 
@@ -111,9 +121,9 @@ def generate_graph(request, query_type, query_value=None):
     if not tracks or not track_ids:
         return JsonResponse({"error": "No tracks found"}, status=404)
 
-    # Fetch URLs for the tracks using Spotify API
+    # Fetch URLs and song names for the tracks using Spotify API
     try:
-        urls = get_track_image(track_ids)  # urls is now a list
+        urls, song_names = get_track_image(track_ids)  # urls and song_names are now lists
     except Exception as e:
         return JsonResponse({"error": f"Failed to fetch track images: {str(e)}"}, status=500)
 
@@ -136,11 +146,13 @@ def generate_graph(request, query_type, query_value=None):
     G = nx.Graph()
     nodes = {}
 
-    # Add nodes with track_id and URL information
+    # Add nodes with track_id, URL, and song name information
     for i, track in enumerate(track_list):
-        # Get the URL for the current track using the index
+        # Get the URL and song name for the current track using the index
         track_url = urls[i]  # URLs are in the same order as track_list
+        song_name = song_names[i]  # Song names are in the same order as track_list
         nodes[i] = Node(index=i, track_id=track["track_id"], url=track_url)
+        nodes[i].song_name = song_name  # Add song name to the node
         G.add_node(i)  # Add node index to the graph
 
     # Add edges based on similarity threshold
@@ -161,7 +173,16 @@ def generate_graph(request, query_type, query_value=None):
 
     # Convert the graph into a JSON format
     graph_data = {
-        "nodes": [node.to_dict() for node in nodes.values() if node.index in G.nodes()],
+        "nodes": [
+            {
+                "id": node.index,
+                "track_id": node.track_id,
+                "url": node.url,
+                "song_name": node.song_name,  # Include song name
+                "group": node.group,
+            }
+            for node in nodes.values() if node.index in G.nodes()
+        ],
         "edges": [
             {
                 "source": u,
