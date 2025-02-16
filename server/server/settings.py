@@ -28,13 +28,11 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-7m8rl&_pyyx*@#+fehsyl
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = [
-    'localhost',
-    os.environ.get('ALLOWED_HOSTS', '')
+    os.environ.get('ALLOWED_HOSTS', 'localhost')
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    os.environ.get('CORS_ALLOWED_ORIGINS', '')
+    os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:5173')
 ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
