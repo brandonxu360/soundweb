@@ -1,0 +1,65 @@
+/* =================
+   Base Navbar Layout
+   ================= */
+   .navbar-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding: 1rem;
+    gap: 2rem;
+    z-index: 1000;
+}
+
+/* =================
+   Brand/Logo Styles
+   ================= */
+.navbar-hero {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #7c4dff;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar-logo {
+    height: 2rem;
+    width: auto;
+}
+
+/* =================
+   Desktop Navigation
+   ================= */
+.desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-right: auto;
+}
+
+.navbar-link {
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: 0.9rem;
+    padding: 5px 15px;
+    border-radius: 5px;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    transition: color 0.2s;
+}
+
+.navbar-link:hover {
+    color: #7c4dff;
+}
