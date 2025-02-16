@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,17 +84,21 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        "ENGINE": "django.db.backends.postgresql",
-        'NAME': os.environ.get('POSTGRES_DB', 'pg4django'),
-        'USER': os.environ.get('POSTGRES_USER', 'admin'),
-        'PASSWORD': os.environ.get('POSTGRES_PW', 'password'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+if os.environ.get("DATABASE_URL"):  # If running on Heroku
+    DATABASES = {
+        "default": dj_database_url.config(default=os.environ["DATABASE_URL"])
     }
-}
-
+else:  # If running locally with Docker
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("POSTGRES_DB", "pg4django"),
+            "USER": os.environ.get("POSTGRES_USER", "admin"),
+            "PASSWORD": os.environ.get("POSTGRES_PW", "password"),
+            "HOST": os.environ.get("POSTGRES_HOST", "db"),  # 'db' is the service name in docker-compose
+            "PORT": os.environ.get("POSTGRES_PORT", "5432"),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
