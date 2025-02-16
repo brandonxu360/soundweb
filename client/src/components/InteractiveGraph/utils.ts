@@ -4,6 +4,8 @@ export interface Node {
   id: number
   track_id: string
   group: number
+  song_name: string
+  url: string
 }
 
 export interface Edge {

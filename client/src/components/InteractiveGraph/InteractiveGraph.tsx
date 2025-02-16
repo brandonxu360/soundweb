@@ -6,6 +6,7 @@ import * as THREE from 'three'
 import SidePanel from '../SidePanel/SidePanel'
 import { Node, GraphData, generateColors, createGlowSprite } from './utils'
 import './InteractiveGraph.css'
+import TitleBox from "../TitleBox/TitleBox"; // 🔥 Import TitleBox
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 
@@ -13,6 +14,8 @@ const InteractiveGraph: React.FC = () => {
   const [graphData, setGraphData] = useState<GraphData | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const [hoveredNode, setHoveredNode] = useState<Node | null>(null);
 
   const fetchGraphData = useCallback(async () => {
     setIsLoading(true)
@@ -91,6 +94,10 @@ const InteractiveGraph: React.FC = () => {
     window.alert(`Clicked on track: ${node.track_id}`)
   }, [])
 
+  const handleNodeHover = useCallback((node: Node | null) => {
+    setHoveredNode(node);
+  }, []);
+
   return (
     <div className="graph-container">
       <SidePanel
@@ -119,7 +126,16 @@ const InteractiveGraph: React.FC = () => {
           linkDirectionalParticles={1}
           linkDirectionalParticleWidth={2}
           onNodeClick={handleNodeClick}
+          onNodeHover={handleNodeHover}
           height={window.innerHeight - 92}
+        />
+      )}
+
+      {hoveredNode && (
+        <TitleBox
+          text={hoveredNode.song_name}
+          color={getNodeColor(hoveredNode)}
+          imageUrl={hoveredNode.url}
         />
       )}
     </div>
