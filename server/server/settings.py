@@ -37,6 +37,10 @@ CORS_ALLOWED_ORIGINS = [
     os.environ.get('CORS_ALLOWED_ORIGINS', '')
 ]
 
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https:\/\/soundweb-frontend-.*\.vercel\.app$"
+]
+
 # Application definition
 
 INSTALLED_APPS = [
