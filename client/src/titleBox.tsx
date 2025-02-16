@@ -1,5 +1,5 @@
 import React from "react";
-import "/src/titleBox.css";
+import "./TitleBox.css";
 
 type Props = {
   text: string;
