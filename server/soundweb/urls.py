@@ -23,5 +23,6 @@ urlpatterns = [
     path("graph/genre/<str:query_value>/", generate_graph, {"query_type": "genre"}),
     path("genres/", list_genres, name="list_genres"),
     path("artists/", list_artists, name="list_artists"),
+    # place holder for song details
 ]
 
