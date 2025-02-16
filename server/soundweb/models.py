@@ -1,9 +1,9 @@
 from django.db import models
 
 class Track(models.Model):
-    track_id = models.CharField(max_length=50, unique=True)
-    artist = models.CharField(max_length=255)
-    track_name = models.CharField(max_length=255)
+    track_id = models.CharField(max_length=50)
+    artist = models.CharField(max_length=500)
+    track_name = models.CharField(max_length=500)
     genre = models.CharField(max_length=100)
     
     # Track features
