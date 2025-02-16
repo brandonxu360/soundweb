@@ -34,6 +34,7 @@ def get_tracks(query_type, query_value=None):
 
 def generate_graph(request, query_type, query_value=None):
     tracks = get_tracks(query_type, query_value)
+    track_ids = [track['track_id'] for track in track_list]
     
     # If no tracks are found at all, return an empty response
     if not tracks.exists():
@@ -102,3 +103,6 @@ def list_genres(request):
 def list_artists(request):
     artists = Track.objects.values_list("artist", flat=True).distinct()
     return JsonResponse({"artists": list(artists)}, safe=False)
+
+def get_song(request):
+    return image_url, name
