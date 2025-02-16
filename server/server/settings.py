@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-7m8rl&_pyyx*@#+fehsylfugg-n3)&9qq5%t^!ng*munv2a_3%
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    os.environ.get('BACKEND_ALLOWED_HOSTS', 'http://localhost:8000'),
+    'localhost'
 ]
 
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'soundweb'
 ]
 
 MIDDLEWARE = [

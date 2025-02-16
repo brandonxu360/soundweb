@@ -16,5 +16,11 @@ else
     echo "Environment variables not set properly, could not create superuser"
 fi
 
+echo "Loading Song Data"
+python manage.py shell << EOF
+from server.soundweb.load import load
+load()
+EOF
+
 echo "Starting server"
 exec "$@"
