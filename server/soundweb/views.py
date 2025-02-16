@@ -2,12 +2,11 @@ from django.shortcuts import render
 import json
 import numpy as np
 import networkx as nx
-import requests
-import base64
 import community.community_louvain as community_louvain  # Louvain community detection
 from django.http import JsonResponse
 from sklearn.metrics.pairwise import cosine_similarity
 from .models import Track
+
 
 # Spotify API credentials
 CLIENT_ID = '897a6277f3ab4181a598d00bce4b4eef'
@@ -71,22 +70,19 @@ def get_track_image(track_ids):
     return urls
 
 
-    # Node class to store node information
+# Node class to store node information
 class Node:
-    def __init__(self, index, track_id, url):
+    def __init__(self, index, track_id):
         self.index = index
         self.track_id = track_id
-        self.url = url
         self.group = None
 
     def to_dict(self):
         return {
             "id": self.index,
             "track_id": self.track_id,
-            "url": self.url,
             "group": self.group,
         }
-        
 
 def get_tracks(query_type, query_value=None):
     if query_type == "random":
@@ -96,11 +92,8 @@ def get_tracks(query_type, query_value=None):
     elif query_type == "genre":
         tracks = Track.objects.filter(genre=query_value).order_by("?")[:50]  # 50 tracks from a genre
     else:
-        return None, None
-
-    track_ids = [track.track_id for track in tracks]  # Extract track IDs for all cases
-    return tracks, track_ids
-
+        return None
+    return tracks
 
 def generate_graph(request, query_type, query_value=None):
     tracks, track_ids = get_tracks(query_type, query_value)
@@ -169,7 +162,7 @@ def generate_graph(request, query_type, query_value=None):
             for u, v, d in G.edges(data=True)
         ],
     }
-
+    
     return JsonResponse(graph_data, safe=False)
     
 
