@@ -14,12 +14,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
-import soundweb.urls
+from django.urls import path
+from .views import generate_graph, list_genres, list_artists
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('soundweb.urls'))
+    path("graph/random/", generate_graph, {"query_type": "random"}),
+    path("graph/artist/<str:query_value>/", generate_graph, {"query_type": "artist"}),
+    path("graph/genre/<str:query_value>/", generate_graph, {"query_type": "genre"}),
+    path("genres/", list_genres, name="list_genres"),
+    path("artists/", list_artists, name="list_artists"),
 ]
 
