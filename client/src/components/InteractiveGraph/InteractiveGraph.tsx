@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect, useMemo } from "react"
 import type React from "react"
 import ForceGraph3D from 'react-force-graph-3d'
-import SpriteText from "three-spritetext"
 import * as THREE from 'three'
 import SidePanel from '../SidePanel/SidePanel'
 import { Node, GraphData, generateColors, createGlowSprite } from './utils'
@@ -78,14 +77,6 @@ const InteractiveGraph: React.FC = () => {
     const glow = createGlowSprite(getNodeColor(node))
     glow.scale.set(20, 20, 1)
     group.add(glow)
-
-    const label = new SpriteText(node.track_id)
-    label.color = getNodeColor(node)
-    label.textHeight = 4
-    label.backgroundColor = 'transparent'
-    label.padding = 2
-    label.position.set(0, 8, 0)
-    group.add(label)
 
     return group
   }, [sphereGeometry, getNodeColor])
