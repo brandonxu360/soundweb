@@ -1,5 +1,5 @@
 # soundweb
-A Spotify music visualizer to see how interconnected your tracks are.
+A Spotify music visualizer to explore popular related tracks.
 
 The key technologies include:
 
